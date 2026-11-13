@@ -1,0 +1,695 @@
+{
+  "sourceLanguage": "en",
+  "strings": {
+    "Allow Cat Is Coming in Privacy & Security › Accessibility.": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Autorise Cat Is Coming dans Confidentialité et sécurité › Accessibilité."
+          }
+        }
+      }
+    },
+    "Allow Cat Is Coming in System Settings › Notifications.": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Autorise Cat Is Coming dans Réglages Système › Notifications."
+          }
+        }
+      }
+    },
+    "Allow Input Locking…": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Autoriser le verrouillage…"
+          }
+        }
+      }
+    },
+    "Allow Notifications…": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Autoriser les notifications…"
+          }
+        }
+      }
+    },
+    "Allow banners in System Settings › Notifications.": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Autorise les bannières dans Réglages Système › Notifications."
+          }
+        }
+      }
+    },
+    "Allow banners to get notified after using an unlock shortcut.": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Autorise les bannières pour être prévenu après un raccourci de déverrouillage."
+          }
+        }
+      }
+    },
+    "Cat Is Coming": {
+      "shouldTranslate": false
+    },
+    "Cat Is Coming Settings": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Réglages de Cat Is Coming"
+          }
+        }
+      }
+    },
+    "Confirm the login item in System Settings.": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Confirme l’ouverture dans les Réglages Système."
+          }
+        }
+      }
+    },
+    "Control, Shift, and Escape": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Contrôle, Majuscule et Échap"
+          }
+        }
+      }
+    },
+    "Couldn’t change the login setting. %@": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Impossible de modifier l’ouverture à la connexion. %@"
+          }
+        }
+      }
+    },
+    "Couldn’t create the image.": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Impossible de créer l’image."
+          }
+        }
+      }
+    },
+    "Couldn’t save the image.": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Impossible d’enregistrer l’image."
+          }
+        }
+      }
+    },
+    "Done": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Terminé"
+          }
+        }
+      }
+    },
+    "Esc": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Échap"
+          }
+        }
+      }
+    },
+    "Global Shortcuts": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Raccourcis globaux"
+          }
+        }
+      }
+    },
+    "Heatmap metric": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Mesure de la heatmap"
+          }
+        }
+      }
+    },
+    "Held Time": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Temps maintenu"
+          }
+        }
+      }
+    },
+    "High": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Élevé"
+          }
+        }
+      }
+    },
+    "Include at least one of ⌃, ⌥, or ⌘.": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ajoute au moins une touche parmi ⌃, ⌥ et ⌘."
+          }
+        }
+      }
+    },
+    "Key %lld": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Touche %lld"
+          }
+        }
+      }
+    },
+    "Keyboard and mouse locked": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Clavier et souris verrouillés"
+          }
+        }
+      }
+    },
+    "Keyboard and mouse unlocked": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Clavier et souris déverrouillés"
+          }
+        }
+      }
+    },
+    "Keyboard locked": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Clavier verrouillé"
+          }
+        }
+      }
+    },
+    "Keyboard nap: %@": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sieste sur le clavier : %@"
+          }
+        }
+      }
+    },
+    "Keyboard unlocked": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Clavier déverrouillé"
+          }
+        }
+      }
+    },
+    "Lock Keyboard": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Verrouiller le clavier"
+          }
+        }
+      }
+    },
+    "Lock Mouse": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Verrouiller la souris"
+          }
+        }
+      }
+    },
+    "Low": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Faible"
+          }
+        }
+      }
+    },
+    "Meows": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Miaulements"
+          }
+        }
+      }
+    },
+    "Most Pressed Key": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Touche la plus utilisée"
+          }
+        }
+      }
+    },
+    "Mouse locked": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Souris verrouillée"
+          }
+        }
+      }
+    },
+    "Mouse unlocked": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Souris déverrouillée"
+          }
+        }
+      }
+    },
+    "No key presses during this lock.": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Aucun appui pendant ce verrouillage."
+          }
+        }
+      }
+    },
+    "Notifications": {
+      "shouldTranslate": false
+    },
+    "Notifications are allowed.": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Notifications autorisées."
+          }
+        }
+      }
+    },
+    "OK": {
+      "shouldTranslate": false
+    },
+    "Open Login Items…": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ouvrir les éléments d’ouverture…"
+          }
+        }
+      }
+    },
+    "Open at Login": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ouvrir à la connexion"
+          }
+        }
+      }
+    },
+    "Paws on the Keyboard": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Patounes sur le clavier"
+          }
+        }
+      }
+    },
+    "Press the shortcut…": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tape le raccourci…"
+          }
+        }
+      }
+    },
+    "Presses": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Appuis"
+          }
+        }
+      }
+    },
+    "Presses: %lld · Held: %@ s": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Appuis : %lld · Maintien : %@ s"
+          }
+        }
+      }
+    },
+    "Presses: %lld · Hold time unavailable": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Appuis : %lld · Durée indisponible"
+          }
+        }
+      }
+    },
+    "Preview of the keyboard activity image": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Aperçu de l’image des patounes sur le clavier"
+          }
+        }
+      }
+    },
+    "Quit Cat Is Coming": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Quitter Cat Is Coming"
+          }
+        }
+      }
+    },
+    "Return": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Retour"
+          }
+        }
+      }
+    },
+    "Save PNG…": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Enregistrer le PNG…"
+          }
+        }
+      }
+    },
+    "Secure keyboard entry is active. Leave the protected field and try again.": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "La saisie sécurisée est active. Réessaie après avoir quitté le champ protégé."
+          }
+        }
+      }
+    },
+    "Select a key to see its presses and held time.": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sélectionne une touche pour voir ses appuis et sa durée."
+          }
+        }
+      }
+    },
+    "Settings…": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Réglages…"
+          }
+        }
+      }
+    },
+    "Share the Paw Prints": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Partager les patounes"
+          }
+        }
+      }
+    },
+    "Share the Paw Prints…": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Partager les patounes…"
+          }
+        }
+      }
+    },
+    "Share…": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Partager…"
+          }
+        }
+      }
+    },
+    "Space": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Espace"
+          }
+        }
+      }
+    },
+    "This shortcut is already in use.": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ce raccourci est déjà utilisé."
+          }
+        }
+      }
+    },
+    "This shortcut is reserved for unlocking.": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ce raccourci est réservé au déverrouillage."
+          }
+        }
+      }
+    },
+    "Total Presses": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Appuis au total"
+          }
+        }
+      }
+    },
+    "Try Again": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Réessayer"
+          }
+        }
+      }
+    },
+    "Unlock Everything": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tout déverrouiller"
+          }
+        }
+      }
+    },
+    "Unlock Everything (%@)": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tout déverrouiller (%@)"
+          }
+        }
+      }
+    },
+    "Unlock Keyboard": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Déverrouiller le clavier"
+          }
+        }
+      }
+    },
+    "Unlock Mouse": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Déverrouiller la souris"
+          }
+        }
+      }
+    },
+    "Use ⌃, ⌥, or ⌘ with a key. Press Esc to cancel.": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Utilise ⌃, ⌥ ou ⌘ avec une touche. Échap pour annuler."
+          }
+        }
+      }
+    },
+    "View Last Paw Activity…": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Voir les dernières patounes…"
+          }
+        }
+      }
+    },
+    "View Paw Activity": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Voir l’activité des patounes"
+          }
+        }
+      }
+    },
+    "Your cat is coming": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Votre chat arrive"
+          }
+        }
+      }
+    },
+    "macOS couldn’t freeze the pointer.": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "macOS n’a pas permis de figer le pointeur."
+          }
+        }
+      }
+    },
+    "macOS couldn’t start the input filter. Check the permission and reopen the app.": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "macOS n’a pas activé le filtre. Vérifie l’autorisation puis relance l’app."
+          }
+        }
+      }
+    },
+    "macOS interrupted the input filter. Click Try Again to restart it.": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "macOS a interrompu le filtre. Clique sur Réessayer pour le réactiver."
+          }
+        }
+      }
+    },
+    "macOS stopped freezing the pointer.": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "macOS a interrompu le gel du pointeur."
+          }
+        }
+      }
+    }
+  },
+  "version": "1.0"
+}
