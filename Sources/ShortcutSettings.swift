@@ -5,11 +5,24 @@ import SwiftUI
 enum ShortcutTarget: String, CaseIterable, Identifiable {
     case keyboard = "keyboardShortcut"
     case pointer = "pointerShortcut"
+    case lockAll = "lockAllShortcut"
 
     var id: Self { self }
-    var title: String { self == .keyboard ? String(localized: "Lock Keyboard") : String(localized: "Lock Mouse") }
-    var defaultShortcut: Shortcut { self == .keyboard ? .keyboard : .pointer }
-    var other: Self { self == .keyboard ? .pointer : .keyboard }
+    var title: String {
+        switch self {
+        case .keyboard: String(localized: "Lock Keyboard")
+        case .pointer: String(localized: "Lock Mouse")
+        case .lockAll: String(localized: "Lock Everything")
+        }
+    }
+
+    var defaultShortcut: Shortcut {
+        switch self {
+        case .keyboard: .keyboard
+        case .pointer: .pointer
+        case .lockAll: .lockForCurrentLayout()
+        }
+    }
 }
 
 struct ShortcutSettings: View {
@@ -29,6 +42,9 @@ struct ShortcutSettings: View {
                     .accessibilityHidden(true)
                 Text("Cat Is Coming")
                     .font(.title2.weight(.semibold))
+            }
+            Section("Automatic Lock") {
+                AutomaticLockSettings(delegate: delegate)
             }
             Section("Global Shortcuts") {
                 ForEach(ShortcutTarget.allCases) { target in
@@ -58,8 +74,7 @@ struct ShortcutSettings: View {
             }
         }
         .formStyle(.grouped)
-        .frame(width: 450)
-        .fixedSize(horizontal: false, vertical: true)
+        .frame(width: 500, height: min(620, (NSScreen.main?.visibleFrame.height ?? 660) - 40))
         .task { await delegate.refreshNotificationStatus() }
         .onDisappear { stopRecording() }
         .onReceive(NotificationCenter.default.publisher(for: NSWindow.didResignKeyNotification)) { _ in
@@ -95,7 +110,9 @@ struct ShortcutSettings: View {
             message = String(localized: "This shortcut is reserved for unlocking.")
             return
         }
-        if delegate.shortcut(for: target.other).matches(keyCode: keyCode, flags: flags) {
+        if ShortcutTarget.allCases.contains(where: {
+            $0 != target && delegate.shortcut(for: $0).matches(keyCode: keyCode, flags: flags)
+        }) {
             message = String(localized: "This shortcut is already in use.")
             return
         }
@@ -117,5 +134,99 @@ struct ShortcutSettings: View {
         recording = nil
         message = nil
         input.recordingShortcut = false
+    }
+}
+
+private struct AutomaticLockSettings: View {
+    @ObservedObject var delegate: AppDelegate
+
+    var body: some View {
+        Toggle("Lock the keyboard when paws are detected", isOn: Binding(
+            get: { delegate.automaticLockEnabled },
+            set: { delegate.setAutomaticLockEnabled($0) }
+        ))
+        trigger("Several keys pressed at once", enabled: \.landingEnabled) {
+            threshold("Number of keys", \.landingKeyCount, in: AutomaticLockRules.keyCountRange)
+            threshold("Maximum time between presses", \.landingWindowMS, in: AutomaticLockRules.pressWindowRange, step: 5)
+        }
+        trigger("Several keys held together", enabled: \.settlingEnabled) {
+            threshold("Number of keys", \.settlingKeyCount, in: AutomaticLockRules.keyCountRange)
+            threshold("Maximum time between presses", \.settlingWindowMS, in: AutomaticLockRules.pressWindowRange, step: 5)
+            threshold("Minimum hold time", \.settlingHoldMS, in: AutomaticLockRules.settlingHoldRange, step: 25)
+        }
+        trigger("Two quick pairs of keys", enabled: \.crossingEnabled) {
+            threshold("Maximum time within each pair", \.crossingPairWindowMS, in: AutomaticLockRules.pressWindowRange, step: 5)
+            threshold("Minimum overlap within each pair", \.crossingOverlapMS, in: AutomaticLockRules.crossingOverlapRange, step: 5)
+            threshold("Maximum time between pairs", \.crossingWindowMS, in: AutomaticLockRules.crossingWindowRange, step: 50)
+        }
+        trigger("One key held down", enabled: \.singleKeyEnabled) {
+            threshold("Minimum hold time", \.singleKeyHoldMS, in: AutomaticLockRules.singleKeyHoldRange, step: 500)
+            Text("A long press on any regular key can lock the keyboard. Turn this off in games or apps that use long presses.")
+                .font(.footnote)
+                .foregroundStyle(.secondary)
+        }
+        Button("Restore Default Thresholds") {
+            var rules = AutomaticLockRules()
+            rules.landingEnabled = delegate.automaticLockRules.landingEnabled
+            rules.settlingEnabled = delegate.automaticLockRules.settlingEnabled
+            rules.crossingEnabled = delegate.automaticLockRules.crossingEnabled
+            rules.singleKeyEnabled = delegate.automaticLockRules.singleKeyEnabled
+            delegate.setAutomaticLockRules(rules)
+        }
+        .disabled(!delegate.automaticLockEnabled)
+    }
+
+    private func trigger<Content: View>(
+        _ title: LocalizedStringKey, enabled: WritableKeyPath<AutomaticLockRules, Bool>,
+        @ViewBuilder content: @escaping () -> Content
+    ) -> some View {
+        DisclosureGroup {
+            VStack(alignment: .leading, spacing: 10, content: content)
+                .padding(.vertical, 4)
+                .disabled(!delegate.automaticLockEnabled)
+        } label: {
+            HStack(spacing: 12) {
+                Text(title)
+                Spacer(minLength: 0)
+                Toggle(title, isOn: rule(enabled))
+                    .labelsHidden()
+                    .toggleStyle(.switch)
+                    .controlSize(.small)
+                    .disabled(!delegate.automaticLockEnabled)
+            }
+        }
+    }
+
+    private func rule<Value>(_ path: WritableKeyPath<AutomaticLockRules, Value>) -> Binding<Value> {
+        Binding {
+            delegate.automaticLockRules[keyPath: path]
+        } set: { value in
+            var rules = delegate.automaticLockRules
+            rules[keyPath: path] = value
+            delegate.setAutomaticLockRules(rules)
+        }
+    }
+
+    private func threshold(
+        _ label: LocalizedStringKey, _ path: WritableKeyPath<AutomaticLockRules, Int>,
+        in range: ClosedRange<Int>, step: Int = 1
+    ) -> some View {
+        let value = delegate.automaticLockRules[keyPath: path]
+        return Stepper(value: rule(path), in: range, step: step) {
+            LabeledContent {
+                if path == \.singleKeyHoldMS {
+                    Text(Duration.milliseconds(value), format: .units(
+                        allowed: [.seconds], width: .abbreviated,
+                        fractionalPart: .show(length: value % 1_000 == 0 ? 0 : 1)
+                    ))
+                } else if step == 1 {
+                    Text(value, format: .number)
+                } else {
+                    Text(Duration.milliseconds(value), format: .units(allowed: [.milliseconds], width: .abbreviated))
+                }
+            } label: {
+                Text(label)
+            }
+        }
     }
 }

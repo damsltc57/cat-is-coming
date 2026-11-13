@@ -1,4 +1,5 @@
 import AppKit
+import AVFoundation
 import SwiftUI
 
 final class LockNoticeController {
@@ -6,8 +7,11 @@ final class LockNoticeController {
     private let model = LockNoticeModel()
     private var panel: NSPanel?
     private var dismissal: Task<Void, Never>?
+    private var keyboardWasLocked = false
 
-    func update(keyboard: Bool, pointer: Bool, show: Bool) {
+    func update(keyboard: Bool, pointer: Bool, show: Bool, automaticPattern: PawPattern?) {
+        let keyboardJustLocked = keyboard && !keyboardWasLocked
+        keyboardWasLocked = keyboard
         if model.showHeatmap && !show { return }
         guard keyboard || pointer else {
             dismiss()
@@ -21,12 +25,19 @@ final class LockNoticeController {
             String(localized: "Mouse locked")
         }
         guard show else { return }
+        model.automaticPattern = automaticPattern
         model.showHeatmap = false
+        if keyboardJustLocked {
+            model.catClip = CatNoticeClip(resource: "CatArrives")
+        } else if !keyboard {
+            model.catClip = nil
+        }
         present(for: .seconds(4), interactive: false)
     }
 
     func showKeyboardReport(open: @escaping () -> Void) {
         model.showHeatmap = true
+        model.catClip = CatNoticeClip(resource: "CatLeaves")
         model.openHeatmap = { [weak self] in
             self?.dismiss()
             open()
@@ -59,6 +70,7 @@ final class LockNoticeController {
             try? await Task.sleep(for: .milliseconds(200))
             guard !Task.isCancelled else { return }
             self?.panel?.orderOut(nil)
+            self?.model.catClip = nil
         }
     }
 
@@ -95,7 +107,9 @@ final class LockNoticeController {
 
 private final class LockNoticeModel: ObservableObject {
     @Published var status = ""
+    @Published var automaticPattern: PawPattern?
     @Published var showHeatmap = false
+    @Published var catClip: CatNoticeClip?
     var openHeatmap: (() -> Void)?
     @Published private(set) var visible = false
 
@@ -103,6 +117,48 @@ private final class LockNoticeModel: ObservableObject {
         withAnimation(.timingCurve(0.23, 1, 0.32, 1, duration: 0.2)) {
             self.visible = visible
         }
+    }
+}
+
+private struct CatNoticeClip: Identifiable {
+    let id = UUID()
+    let resource: String
+}
+
+private struct CatNoticeVideo: NSViewRepresentable {
+    let url: URL
+
+    func makeNSView(context: Context) -> PlayerView {
+        let view = PlayerView()
+        let player = AVPlayer(url: url)
+        player.isMuted = true
+        player.actionAtItemEnd = .pause
+        view.playerLayer.player = player
+        player.play()
+        return view
+    }
+
+    func updateNSView(_ view: PlayerView, context: Context) {}
+
+    static func dismantleNSView(_ view: PlayerView, coordinator: ()) {
+        view.playerLayer.player?.pause()
+        view.playerLayer.player = nil
+    }
+
+    final class PlayerView: NSView {
+        let playerLayer = AVPlayerLayer()
+
+        override func makeBackingLayer() -> CALayer { playerLayer }
+
+        init() {
+            super.init(frame: .zero)
+            wantsLayer = true
+        }
+
+        override func hitTest(_ point: NSPoint) -> NSView? { nil }
+
+        @available(*, unavailable)
+        required init?(coder: NSCoder) { fatalError() }
     }
 }
 
@@ -116,9 +172,7 @@ private struct LockNoticeView: View {
 
     var body: some View {
         HStack(spacing: 15) {
-            Image("CatArtwork")
-                .resizable()
-                .scaledToFit()
+            catArtwork
                 .frame(width: 64, height: 64)
                 .rotationEffect(.degrees(model.visible || reduceMotion ? 0 : -9))
                 .scaleEffect(model.visible || reduceMotion ? 1 : 0.95)
@@ -140,7 +194,7 @@ private struct LockNoticeView: View {
                     .foregroundStyle(mint)
                     .padding(.top, 3)
                 } else {
-                    title("Your cat is coming")
+                    title(lockTitle)
                     Text(model.status)
                         .font(.system(size: 13, weight: .medium))
                         .foregroundStyle(cream.opacity(0.8))
@@ -176,9 +230,32 @@ private struct LockNoticeView: View {
         .accessibilityElement(children: model.showHeatmap ? .contain : .combine)
     }
 
+    @ViewBuilder
+    private var catArtwork: some View {
+        if !reduceMotion, let clip = model.catClip,
+           let url = Bundle.main.url(forResource: clip.resource, withExtension: "mov") {
+            CatNoticeVideo(url: url)
+                .id(clip.id)
+        } else {
+            Image("CatArtwork")
+                .resizable()
+                .scaledToFit()
+        }
+    }
+
     private func title(_ text: LocalizedStringKey) -> some View {
         Text(text)
             .font(.system(size: 20, weight: .semibold, design: .rounded))
             .foregroundStyle(cream)
+    }
+
+    private var lockTitle: LocalizedStringKey {
+        switch model.automaticPattern {
+        case .landing: "Paws have landed"
+        case .settling: "A cat has settled in"
+        case .crossing: "Paws on the move"
+        case .singleKeyHold: "A paw is holding a key"
+        case nil: "Your cat is coming"
+        }
     }
 }

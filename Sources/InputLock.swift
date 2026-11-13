@@ -10,32 +10,58 @@ final class InputLock: ObservableObject {
     @Published private(set) var lastKeyboardActivity: KeyboardSession?
 
     var onShortcut: ((String) -> Void)?
-    var onLocksChanged: ((_ didLock: Bool) -> Void)?
+    var onLocksChanged: ((_ didLock: Bool, _ automaticPattern: PawPattern?) -> Void)?
     var onKeyboardSessionEnded: (() -> Void)?
-    var keyboardShortcut: Shortcut {
-        get { filter.keyboardShortcut }
-        set { filter.keyboardShortcut = newValue }
+    @Published var keyboardShortcut = Shortcut.keyboard {
+        didSet { filter.keyboardShortcut = keyboardShortcut }
     }
-    var pointerShortcut: Shortcut {
-        get { filter.pointerShortcut }
-        set { filter.pointerShortcut = newValue }
+    @Published var pointerShortcut = Shortcut.pointer {
+        didSet { filter.pointerShortcut = pointerShortcut }
     }
-    var recordingShortcut: Bool {
-        get { filter.recordingShortcut }
-        set { filter.recordingShortcut = newValue }
+    @Published var lockShortcut = Shortcut.lock {
+        didSet { filter.lockShortcut = lockShortcut }
+    }
+    @Published var recordingShortcut = false {
+        didSet {
+            filter.recordingShortcut = recordingShortcut
+            updatePawHoldTimer()
+        }
+    }
+    var automaticLockEnabled = false {
+        didSet {
+            filter.automaticLockEnabled = automaticLockEnabled
+            updatePawHoldTimer()
+        }
+    }
+    var automaticLockRules: AutomaticLockRules {
+        get { filter.automaticLockRules }
+        set {
+            filter.automaticLockRules = newValue
+            updatePawHoldTimer()
+        }
     }
 
     private var filter = InputFilter()
     private var eventTap: CFMachPort?
     private var eventSource: CFRunLoopSource?
     private var permissionTimer: Timer?
+    private var pawHoldTimer: Timer?
+    private var scheduledPawHold: UInt64?
+
+    var accessibilityTrusted: Bool { AXIsProcessTrusted() }
+
+    func openAccessibilitySettings() {
+        if let url = URL(string: "x-apple.systempreferences:com.apple.preference.security?Privacy_Accessibility") {
+            NSWorkspace.shared.open(url)
+        }
+    }
 
     func refresh(prompt: Bool = false) {
-        if prompt {
+        if prompt && !accessibilityTrusted {
             let options = ["AXTrustedCheckOptionPrompt": true] as CFDictionary
             _ = AXIsProcessTrustedWithOptions(options)
         }
-        guard AXIsProcessTrusted() else {
+        guard accessibilityTrusted else {
             if eventTap != nil { stop() }
             issue = String(localized: "Allow Cat Is Coming in Privacy & Security › Accessibility.")
             startPermissionChecks()
@@ -87,7 +113,15 @@ final class InputLock: ObservableObject {
         freshFilter.keyboardShortcut = filter.keyboardShortcut
         freshFilter.pointerShortcut = filter.pointerShortcut
         freshFilter.recordingShortcut = filter.recordingShortcut
+        freshFilter.automaticLockEnabled = automaticLockEnabled
+        freshFilter.automaticLockRules = automaticLockRules
         filter = freshFilter
+    }
+
+    func releaseForSessionChange() {
+        unlockAll()
+        filter.resetPawDetection()
+        updatePawHoldTimer()
     }
 
     private func startPermissionChecks() {
@@ -117,47 +151,75 @@ final class InputLock: ObservableObject {
         }
         guard ready else { return nil }
         let locking = action == .toggleKeyboard ? !keyboardLocked : !pointerLocked
-        if locking, IsSecureEventInputEnabled() {
-            issue = String(localized: "Secure keyboard entry is active. Leave the protected field and try again.")
-            return nil
-        }
-        issue = nil
-
         let message: String
         switch action {
+        case .lockAll:
+            guard !keyboardLocked || !pointerLocked,
+                  lockInputs(keyboard: !keyboardLocked, pointer: !pointerLocked, at: time) else { return nil }
+            return String(localized: "Keyboard and mouse locked")
         case .toggleKeyboard:
-            filter.keyboardLocked = locking
-            keyboardLocked = locking
             if locking {
-                filter.keyboardActivity = KeyboardActivity(startedAt: time)
-            } else {
-                finishKeyboardActivity(at: time)
+                guard lockInputs(keyboard: true, pointer: false, at: time) else { return nil }
+                return String(localized: "Keyboard locked")
             }
-            message = locking ? String(localized: "Keyboard locked") : String(localized: "Keyboard unlocked")
+            filter.endKeyboardLock()
+            updatePawHoldTimer()
+            keyboardLocked = false
+            finishKeyboardActivity(at: time)
+            message = String(localized: "Keyboard unlocked")
         case .togglePointer:
             if locking {
-                guard let position = CGEvent(source: nil)?.location,
-                      CGWarpMouseCursorPosition(position) == .success else {
-                    issue = String(localized: "macOS couldn’t freeze the pointer.")
-                    return nil
-                }
-                filter.pointerAnchor = position
-            } else {
-                filter.pointerAnchor = nil
+                guard lockInputs(keyboard: false, pointer: true, at: time) else { return nil }
+                return String(localized: "Mouse locked")
             }
-            pointerLocked = locking
-            message = locking ? String(localized: "Mouse locked") : String(localized: "Mouse unlocked")
+            filter.pointerAnchor = nil
+            pointerLocked = false
+            message = String(localized: "Mouse unlocked")
         case .unlockAll:
             return nil
         }
 
-        reportLocksChanged(didLock: locking)
+        issue = nil
+        reportLocksChanged(didLock: false)
         return message
+    }
+
+    private func lockInputs(
+        keyboard: Bool, pointer: Bool, at time: UInt64,
+        automaticPattern: PawPattern? = nil, suppressing key: Int64? = nil
+    ) -> Bool {
+        guard !IsSecureEventInputEnabled() else {
+            if automaticPattern != nil {
+                filter.resetPawDetection()
+                updatePawHoldTimer()
+                return false
+            }
+            issue = String(localized: "Secure keyboard entry is active. Leave the protected field and try again.")
+            return false
+        }
+        if pointer {
+            guard let position = CGEvent(source: nil)?.location,
+                  CGWarpMouseCursorPosition(position) == .success else {
+                issue = String(localized: "macOS couldn’t freeze the pointer.")
+                return false
+            }
+            filter.pointerAnchor = position
+            pointerLocked = true
+        }
+        if keyboard {
+            filter.beginKeyboardLock(at: time, automatically: automaticPattern != nil, suppressing: key)
+            updatePawHoldTimer()
+            keyboardLocked = true
+        }
+        issue = nil
+        reportLocksChanged(didLock: true, automaticPattern: automaticPattern)
+        return true
     }
 
     func unlockAll(at time: UInt64 = DispatchTime.now().uptimeNanoseconds) {
         let wasLocked = keyboardLocked || pointerLocked
-        filter.keyboardLocked = false
+        filter.endKeyboardLock()
+        updatePawHoldTimer()
         filter.pointerAnchor = nil
         keyboardLocked = false
         pointerLocked = false
@@ -167,10 +229,17 @@ final class InputLock: ObservableObject {
 
     fileprivate func allows(_ type: CGEventType, event: CGEvent) -> Bool {
         if type == .tapDisabledByTimeout || type == .tapDisabledByUserInput {
-            unlockAll()
+            releaseForSessionChange()
             ready = false
             issue = String(localized: "macOS interrupted the input filter. Click Try Again to restart it.")
             return true
+        }
+        defer {
+            if automaticLockEnabled && (
+                InputFilter.keyboardEvents.contains(type) || InputFilter.intentionalPointerEvents.contains(type)
+            ) {
+                updatePawHoldTimer()
+            }
         }
         switch filter.handle(type, event: event) {
         case .pass:
@@ -190,13 +259,48 @@ final class InputLock: ObservableObject {
                 Task { @MainActor [weak self] in self?.onShortcut?(message) }
             }
             return false
+        case .detectPaws(let pattern):
+            // A release must reach the foreground app if its original press did.
+            let key = type == .keyDown ? event.getIntegerValueField(.keyboardEventKeycode) : nil
+            let locked = lockForPaws(pattern, at: event.timestamp, suppressing: key)
+            return key == nil || !locked
         }
     }
 
+    private func updatePawHoldTimer() {
+        let deadline = filter.pawHoldDeadline
+        guard deadline != scheduledPawHold else { return }
+        pawHoldTimer?.invalidate()
+        pawHoldTimer = nil
+        scheduledPawHold = deadline
+        guard let deadline else { return }
+        let now = DispatchTime.now().uptimeNanoseconds
+        let delay = Double(deadline - min(deadline, now)) / 1_000_000_000
+        let timer = Timer(timeInterval: delay, repeats: false) { [weak self] _ in
+            MainActor.assumeIsolated { self?.checkPawHold() }
+        }
+        pawHoldTimer = timer
+        RunLoop.main.add(timer, forMode: .common)
+    }
+
+    private func checkPawHold() {
+        scheduledPawHold = nil
+        pawHoldTimer = nil
+        let now = DispatchTime.now().uptimeNanoseconds
+        if let pattern = filter.detectHeldPaws(at: now) {
+            _ = lockForPaws(pattern, at: now)
+        } else {
+            updatePawHoldTimer()
+        }
+    }
+
+    private func lockForPaws(_ pattern: PawPattern, at time: UInt64, suppressing key: Int64? = nil) -> Bool {
+        guard ready, automaticLockEnabled, !keyboardLocked, !recordingShortcut else { return false }
+        return lockInputs(keyboard: true, pointer: false, at: time, automaticPattern: pattern, suppressing: key)
+    }
+
     private func finishKeyboardActivity(at time: UInt64) {
-        guard var activity = filter.keyboardActivity else { return }
-        filter.keyboardActivity = nil
-        let session = activity.finish(at: time)
+        guard let session = filter.finishKeyboardActivity(at: time) else { return }
         // Deliver the report after returning from the event tap.
         Task { @MainActor [weak self] in
             guard let self else { return }
@@ -209,17 +313,18 @@ final class InputLock: ObservableObject {
         switch action {
         case .toggleKeyboard: keyboardLocked
         case .togglePointer: pointerLocked
+        case .lockAll: true
         case .unlockAll: false
         }
     }
 
-    private func reportLocksChanged(didLock: Bool) {
+    private func reportLocksChanged(didLock: Bool, automaticPattern: PawPattern? = nil) {
         let keyboard = keyboardLocked
         let pointer = pointerLocked
         // Window and notification work must run outside the Core Graphics callback.
         Task { @MainActor [weak self] in
             guard let self, keyboard == keyboardLocked, pointer == pointerLocked else { return }
-            onLocksChanged?(didLock)
+            onLocksChanged?(didLock, automaticPattern)
         }
     }
 

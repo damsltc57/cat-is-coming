@@ -1,6 +1,16 @@
 {
   "sourceLanguage": "en",
   "strings": {
+    "A cat has settled in": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Un chat s’est installé"
+          }
+        }
+      }
+    },
     "Allow Cat Is Coming in Privacy & Security › Accessibility.": {
       "localizations": {
         "fr": {
@@ -41,6 +51,56 @@
         }
       }
     },
+    "A long press on any regular key can lock the keyboard. Turn this off in games or apps that use long presses.": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Un appui prolongé sur une touche peut verrouiller le clavier. Désactive cette option dans les jeux ou les apps où tu maintiens des touches."
+          }
+        }
+      }
+    },
+    "A paw is holding a key": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Une patoune sur une touche"
+          }
+        }
+      }
+    },
+    "Accessibility": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Accessibilité"
+          }
+        }
+      }
+    },
+    "Adjust Thresholds": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ajuster les seuils"
+          }
+        }
+      }
+    },
+    "Allow Accessibility in System Settings so Cat Is Coming can lock your keyboard and mouse.": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Autorise l’accès dans les Réglages Système pour que Cat Is Coming puisse verrouiller le clavier et la souris."
+          }
+        }
+      }
+    },
     "Allow banners in System Settings › Notifications.": {
       "localizations": {
         "fr": {
@@ -57,6 +117,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Autorise les bannières pour être prévenu après un raccourci de déverrouillage."
+          }
+        }
+      }
+    },
+    "Automatic Lock": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Verrouillage automatique"
           }
         }
       }
@@ -114,6 +184,16 @@
         }
       }
     },
+    "Couldn’t enable notifications. Try again or skip this step.": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Impossible d’activer les notifications. Tu peux réessayer ou passer cette étape."
+          }
+        }
+      }
+    },
     "Couldn’t save the image.": {
       "localizations": {
         "fr": {
@@ -134,12 +214,42 @@
         }
       }
     },
+    "Detects quick paw steps and keys held together. Your mouse stays available.": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Détecte les passages rapides et les touches maintenues ensemble. La souris reste utilisable."
+          }
+        }
+      }
+    },
     "Esc": {
       "localizations": {
         "fr": {
           "stringUnit": {
             "state": "translated",
             "value": "Échap"
+          }
+        }
+      }
+    },
+    "Find the cat in your menu bar.": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Retrouve le chat dans la barre des menus."
+          }
+        }
+      }
+    },
+    "Get a macOS banner after using an unlock shortcut. You can turn this on later in Settings.": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Reçois une bannière macOS après un raccourci de déverrouillage. Tu peux l’activer plus tard dans les réglages."
           }
         }
       }
@@ -214,6 +324,16 @@
         }
       }
     },
+    "Keyboard and mouse locking is ready.": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Le verrouillage du clavier et de la souris est prêt."
+          }
+        }
+      }
+    },
     "Keyboard and mouse unlocked": {
       "localizations": {
         "fr": {
@@ -254,12 +374,32 @@
         }
       }
     },
+    "Lock Everything": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tout verrouiller"
+          }
+        }
+      }
+    },
     "Lock Keyboard": {
       "localizations": {
         "fr": {
           "stringUnit": {
             "state": "translated",
             "value": "Verrouiller le clavier"
+          }
+        }
+      }
+    },
+    "Lock the keyboard when paws are detected": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Verrouiller le clavier si des patounes sont détectées"
           }
         }
       }
@@ -284,12 +424,62 @@
         }
       }
     },
+    "Maximum time between pairs": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Délai maximal entre les paires"
+          }
+        }
+      }
+    },
+    "Maximum time between presses": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Délai maximal entre les appuis"
+          }
+        }
+      }
+    },
+    "Maximum time within each pair": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Délai maximal dans chaque paire"
+          }
+        }
+      }
+    },
     "Meows": {
       "localizations": {
         "fr": {
           "stringUnit": {
             "state": "translated",
             "value": "Miaulements"
+          }
+        }
+      }
+    },
+    "Minimum hold time": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Durée minimale de maintien"
+          }
+        }
+      }
+    },
+    "Minimum overlap within each pair": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Maintien simultané minimal par paire"
           }
         }
       }
@@ -334,8 +524,28 @@
         }
       }
     },
+    "Not Now": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Pas maintenant"
+          }
+        }
+      }
+    },
     "Notifications": {
       "shouldTranslate": false
+    },
+    "Notifications (optional)": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Notifications (facultatives)"
+          }
+        }
+      }
     },
     "Notifications are allowed.": {
       "localizations": {
@@ -343,6 +553,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Notifications autorisées."
+          }
+        }
+      }
+    },
+    "Number of keys": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Nombre de touches"
           }
         }
       }
@@ -356,6 +576,26 @@
           "stringUnit": {
             "state": "translated",
             "value": "Ouvrir les éléments d’ouverture…"
+          }
+        }
+      }
+    },
+    "One key held down": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Une touche maintenue"
+          }
+        }
+      }
+    },
+    "Open Accessibility Settings…": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ouvrir les réglages d’accessibilité…"
           }
         }
       }
@@ -376,6 +616,26 @@
           "stringUnit": {
             "state": "translated",
             "value": "Patounes sur le clavier"
+          }
+        }
+      }
+    },
+    "Paws have landed": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Des patounes se sont posées"
+          }
+        }
+      }
+    },
+    "Paws on the move": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Des patounes en vadrouille"
           }
         }
       }
@@ -440,6 +700,16 @@
         }
       }
     },
+    "Restore Default Thresholds": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Rétablir les seuils par défaut"
+          }
+        }
+      }
+    },
     "Return": {
       "localizations": {
         "fr": {
@@ -486,6 +756,26 @@
           "stringUnit": {
             "state": "translated",
             "value": "Réglages…"
+          }
+        }
+      }
+    },
+    "Several keys held together": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Plusieurs touches maintenues ensemble"
+          }
+        }
+      }
+    },
+    "Several keys pressed at once": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Plusieurs touches pressées presque ensemble"
           }
         }
       }
@@ -560,6 +850,16 @@
         }
       }
     },
+    "Trigger": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Déclencheur"
+          }
+        }
+      }
+    },
     "Try Again": {
       "localizations": {
         "fr": {
@@ -570,22 +870,22 @@
         }
       }
     },
+    "Two quick pairs of keys": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Deux paires de touches rapprochées"
+          }
+        }
+      }
+    },
     "Unlock Everything": {
       "localizations": {
         "fr": {
           "stringUnit": {
             "state": "translated",
             "value": "Tout déverrouiller"
-          }
-        }
-      }
-    },
-    "Unlock Everything (%@)": {
-      "localizations": {
-        "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Tout déverrouiller (%@)"
           }
         }
       }
@@ -636,6 +936,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Voir l’activité des patounes"
+          }
+        }
+      }
+    },
+    "Welcome to Cat Is Coming": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Bienvenue dans Cat Is Coming"
           }
         }
       }
